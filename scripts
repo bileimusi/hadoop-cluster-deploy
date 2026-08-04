@@ -1,0 +1,80 @@
+#同步文件内容
+NODE_IPS=("192.168.21.131" "192.168.21.132")   
+CODE_DIR="/home/world/code"                     
+
+echo "========== 开始同步代码到各节点 =========="
+for ip in "${NODE_IPS[@]}"; do
+    echo ">>> 正在同步到 $ip ..."
+    rsync -avz "$CODE_DIR" "world@$ip:/home/world/"
+done
+
+echo "========== 同步完成 =========="
+
+
+
+
+
+
+#一键启停、查看进程、磁盘同步刷新
+#!/bin/bash
+# 集群节点列表
+HOSTS="world world1 world2"
+
+# Hadoop 运行用户
+HADOOP_USER="hadoop"
+
+# Hadoop sbin 目录路径
+HADOOP_SBIN="/home/hadoop/hadoop/sbin"
+
+# 根据传入参数执行对应操作
+case "$1" in
+    start)
+        echo ">>> 正在启动 HDFS ..."
+        ssh -o StrictHostKeyChecking=no $HADOOP_USER@world "$HADOOP_SBIN/start-dfs.sh"
+        
+        echo ">>> 正在启动 YARN ..."
+        ssh -o StrictHostKeyChecking=no $HADOOP_USER@world "$HADOOP_SBIN/start-yarn.sh"
+        
+        echo ">>> 集群启动完成！"
+        
+        # 遍历所有节点，输出进程状态
+        for host in $HOSTS; do
+            echo "--- $host ---"
+            ssh -o StrictHostKeyChecking=no $HADOOP_USER@host "jps"
+        done
+        ;;
+    
+    stop)
+        echo ">>> 正在停止 YARN ..."
+        ssh -o StrictHostKeyChecking=no $HADOOP_USER@world "$HADOOP_SBIN/stop-yarn.sh"
+        
+        echo ">>> 正在停止 HDFS ..."
+        ssh -o StrictHostKeyChecking=no $HADOOP_USER@world "$HADOOP_SBIN/stop-dfs.sh"
+        
+        echo ">>> 集群已停止！"
+        ;;
+    
+    status)
+        echo ">>> 集群状态："
+        # 遍历所有节点，查看 Java 进程
+        for host in $HOSTS; do
+            echo "--- $host ---"
+            ssh -o StrictHostKeyChecking=no $HADOOP_USER@host "jps"
+        done
+        ;;
+    
+    sync)
+        echo ">>> 同步配置到 world1 ..."
+        rsync -av /home/hadoop/hadoop/etc/hadoop/ $HADOOP_USER@world1:/home/hadoop/hadoop/etc/hadoop/
+        
+        echo ">>> 同步配置到 world2 ..."
+        rsync -av /home/hadoop/hadoop/etc/hadoop/ $HADOOP_USER@world2:/home/hadoop/hadoop/etc/hadoop/
+        
+        echo ">>> 同步完成！"
+        ;;
+    
+    *)
+        echo "用法: $0 {start|stop|status|sync}"
+        exit 1
+        ;;
+esac
