@@ -18,7 +18,8 @@
 
 ## 验证截图
 
-<img width="1242" height="781" alt="image" src="https://github.com/user-attachments/assets/b95df058-36af-4315-9bd8-db739dc7cd6e" />
+<img width="1908" height="1012" alt="image" src="https://github.com/user-attachments/assets/647de7fb-aafd-42bb-8344-27d7503b0540" />
+
 <img width="1914" height="1027" alt="image" src="https://github.com/user-attachments/assets/e6d588fc-99b5-40e1-9494-e7273c725b27" />
 
 
