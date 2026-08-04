@@ -37,7 +37,6 @@
 - **集中式启停**：在 NameNode 节点上统一调度，符合生产环境运维规范
 
 #验证截图
-<img width="1919" height="1069" alt="image" src="https://github.com/user-attachments/assets/ab30f6b1-c145-4ac6-85a2-8ecfeecb9217" />
 <img width="1919" height="861" alt="image" src="https://github.com/user-attachments/assets/c19c60a1-be29-4794-b25e-f654dd4ca3d9" />
 
 
