@@ -8,7 +8,7 @@
 |------|-----|------|
 | world  | 192.168.21.130 | NameNode / ResourceManager |
 | world1 | 192.168.21.131 | DataNode / NodeManager |
-| world2 | 192.168.21.103 | DataNode / NodeManager |
+| world2 | 192.168.21.132 | DataNode / NodeManager |
 
 ## 核心配置
 
